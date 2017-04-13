@@ -10,8 +10,8 @@ public class XposedReceiver extends BroadcastReceiver {
 
     public final static String RESET_ACTION = "com.ryansteckler.nlpunbounce.RESET_STATS";
     public final static String REFRESH_ACTION = "com.ryansteckler.nlpunbounce.REFRESH_STATS";
-    public final static String STAT_NAME = "stat_name";
     public final static String STAT_TYPE = "stat_type";
+    private final static String STAT_NAME = "stat_name";
 
     public XposedReceiver() {
     }
@@ -34,7 +34,7 @@ public class XposedReceiver extends BroadcastReceiver {
                 Intent createIntent = new Intent(ActivityReceiver.CREATE_FILES_ACTION);
                 try {
                     context.sendBroadcast(createIntent);
-                } catch (IllegalStateException ise) {
+                } catch (IllegalStateException ignored) {
                 }
             }
 

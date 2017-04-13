@@ -21,7 +21,7 @@ import com.ryansteckler.nlpunbounce.WakelocksFragment;
 public class TaskerWhichFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
-    public TaskerWhichFragment() {
+    private TaskerWhichFragment() {
     }
 
     /**
@@ -166,9 +166,9 @@ public class TaskerWhichFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onTaskerResetSelected();
+        void onTaskerResetSelected();
 
-        public void onTaskerWhichSetTitle(String title);
+        void onTaskerWhichSetTitle(String title);
     }
 
 

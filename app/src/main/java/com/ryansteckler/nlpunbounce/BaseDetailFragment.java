@@ -1,5 +1,6 @@
 package com.ryansteckler.nlpunbounce;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -24,28 +25,24 @@ import com.ryansteckler.nlpunbounce.tasker.TaskerActivity;
  */
 public abstract class BaseDetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    protected static final String ARG_START_TOP = "startTop";
-    protected static final String ARG_FINAL_TOP = "finalTop";
-    protected static final String ARG_START_BOTTOM = "startBottom";
-    protected static final String ARG_FINAL_BOTTOM = "finalBottom";
-    protected static final String ARG_CUR_STAT = "curStat";
-    protected static final String ARG_TASKER_MODE = "taskerMode";
+    static final String ARG_START_TOP = "startTop";
+    static final String ARG_FINAL_TOP = "finalTop";
+    static final String ARG_START_BOTTOM = "startBottom";
+    static final String ARG_FINAL_BOTTOM = "finalBottom";
+    static final String ARG_CUR_STAT = "curStat";
+    static final String ARG_TASKER_MODE = "taskerMode";
+    BaseStats mStat;
+    boolean mTaskerMode;
+    FragmentClearListener mClearListener = null;
+    FragmentInteractionListener mListener;
+    private int mStartTop;
+    private int mFinalTop;
+    private int mStartBottom;
+    private int mFinalBottom;
+    private boolean mKnownSafe = false;
+    private boolean mFree = false;
 
-    protected int mStartTop;
-    protected int mFinalTop;
-    protected int mStartBottom;
-    protected int mFinalBottom;
-    protected BaseStats mStat;
-    protected boolean mTaskerMode;
-
-    protected FragmentClearListener mClearListener = null;
-
-    protected boolean mKnownSafe = false;
-    protected boolean mFree = false;
-
-    protected FragmentInteractionListener mListener;
-
-    public BaseDetailFragment() {
+    BaseDetailFragment() {
         // Required empty public constructor
     }
 
@@ -79,7 +76,7 @@ public abstract class BaseDetailFragment extends Fragment {
 
         loadStatsFromSource(view);
 
-        SharedPreferences prefs = getActivity().getSharedPreferences(AlarmDetailFragment.class.getPackage().getName() + "_preferences", Context.MODE_WORLD_READABLE);
+        @SuppressLint("WorldReadableFiles") SharedPreferences prefs = getActivity().getSharedPreferences(AlarmDetailFragment.class.getPackage().getName() + "_preferences", Context.MODE_WORLD_READABLE);
 
         final Switch onOff = (Switch) view.findViewById(R.id.switchStat);
         //TODO:  If we're in tasker mode, and have an existing configuration, load that instead of prefs.
@@ -100,8 +97,8 @@ public abstract class BaseDetailFragment extends Fragment {
 
                     if (isPremium || mFree) {
                         final boolean b = !onOff.isChecked();
-                            updateEnabled(b);
-                            return false;
+                        updateEnabled(b);
+                        return false;
                     } else {
                         //Deny based on licensing.
                         warnLicensing(onOff);
@@ -181,7 +178,7 @@ public abstract class BaseDetailFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    protected void warnLicensing(final Switch onOff) {
+    private void warnLicensing(final Switch onOff) {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.alert_nopro_title)
                 .setMessage(R.string.alert_nopro_content)
@@ -229,13 +226,13 @@ public abstract class BaseDetailFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface FragmentInteractionListener {
-        public void onDetailSetTitle(String title);
+        void onDetailSetTitle(String title);
 
-        public void onDetailSetTaskerTitle(String title);
+        void onDetailSetTaskerTitle(String title);
     }
 
     public interface FragmentClearListener {
-        public void onCleared();
+        void onCleared();
     }
 
 

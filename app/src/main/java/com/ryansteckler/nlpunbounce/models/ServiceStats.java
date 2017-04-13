@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class ServiceStats extends BaseStats implements Serializable {
 
 
-    public ServiceStats(String serviceName, int uId) {
+    ServiceStats(String serviceName, int uId) {
 
         setType("service");
         setName(serviceName);

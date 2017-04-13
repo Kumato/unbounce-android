@@ -1,9 +1,7 @@
 package com.ryansteckler.nlpunbounce;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -113,7 +111,7 @@ public class WakelockDetailFragment extends BaseDetailFragment {
 
         getView().findViewById(R.id.editWakelockSeconds).setEnabled(onOff.isChecked());
 
-        View panel = (View) getView().findViewById(R.id.settingsPanel);
+        View panel = getView().findViewById(R.id.settingsPanel);
         TypedValue backgroundValue = new TypedValue();
         Resources.Theme theme = getActivity().getTheme();
         int resId = enabled ? R.attr.background_panel_enabled : R.attr.background_panel_disabled;
@@ -167,7 +165,7 @@ public class WakelockDetailFragment extends BaseDetailFragment {
             getView().findViewById(R.id.editWakelockSeconds).setEnabled(b);
         } catch (NullPointerException e) {
         }
-        View panel = (View) getView().findViewById(R.id.settingsPanel);
+        View panel = getView().findViewById(R.id.settingsPanel);
         TypedValue backgroundValue = new TypedValue();
         Resources.Theme theme = getActivity().getTheme();
         int resId = b ? R.attr.background_panel_enabled : R.attr.background_panel_disabled;

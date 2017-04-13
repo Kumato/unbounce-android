@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 
-import com.ryansteckler.inappbilling.IabHelper;
 import com.ryansteckler.nlpunbounce.helpers.LocaleHelper;
 import com.ryansteckler.nlpunbounce.helpers.ThemeHelper;
 
@@ -26,15 +25,9 @@ public class MaterialSettingsActivity extends Activity
         ServicesFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "Amplify: ";
-    IabHelper mHelper;
 
-    int mCurTheme = ThemeHelper.THEME_DEFAULT;
-    int mCurForceEnglish = -1;
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
-    private boolean mIsPremium = true;
+    private int mCurTheme = ThemeHelper.THEME_DEFAULT;
+    private int mCurForceEnglish = -1;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -51,7 +44,10 @@ public class MaterialSettingsActivity extends Activity
         mCurForceEnglish = LocaleHelper.onActivityCreateSetLocale(this);
         setContentView(R.layout.activity_material_settings);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
+        /*
+      Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+     */
+        NavigationDrawerFragment mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
@@ -64,7 +60,6 @@ public class MaterialSettingsActivity extends Activity
         mLastActionbarColor = getResources().getColor(R.color.background_primary);
 
         Log.i(TAG, "MaterialSettingsActivity Starting SELinux service");
-        startService(new Intent(this, SELinuxService.class));
 
     }
 
@@ -78,14 +73,7 @@ public class MaterialSettingsActivity extends Activity
     }
 
     public boolean isPremium() {
-        return mIsPremium;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+        return true;
     }
 
     @Override
@@ -129,9 +117,10 @@ public class MaterialSettingsActivity extends Activity
         }
     }
 
-    public void restoreActionBar() {
+    private void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         try {
+            assert actionBar != null;
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setTitle(mTitle);

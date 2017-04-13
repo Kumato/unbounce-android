@@ -28,7 +28,7 @@ public abstract class RegexFragment extends android.app.ListFragment implements 
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     protected final static String ARG_TYPE = "type";
-    protected static final String PREF_SET_TEMPLATE = "%1$s_regex_set";
+    private static final String PREF_SET_TEMPLATE = "%1$s_regex_set";
 
     private RegexAdapter mAdapter;
     private OnFragmentInteractionListener mListener;
@@ -38,7 +38,7 @@ public abstract class RegexFragment extends android.app.ListFragment implements 
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public RegexFragment() {
+    RegexFragment() {
     }
 
     protected abstract String getType();
@@ -70,7 +70,7 @@ public abstract class RegexFragment extends android.app.ListFragment implements 
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void reload() {
+    private void reload() {
         //Setup the list adapter
         SharedPreferences prefs = getActivity().getSharedPreferences("com.ryansteckler.nlpunbounce_preferences", Context.MODE_WORLD_READABLE);
         Set<String> sampleSet = new HashSet<String>();
@@ -117,7 +117,7 @@ public abstract class RegexFragment extends android.app.ListFragment implements 
         //Switch to detail view.
         //Open up the regex editor and prepop with this regex content.
         String value = mAdapter.getItem(position);
-        String[] values = value.split("\\$\\$\\|\\|\\$\\$");  // matches $$||$$
+        String[] values = value != null ? value.split("\\$\\$\\|\\|\\$\\$") : new String[0];  // matches $$||$$
         String name, seconds, enabled;
         enabled = "enabled";
 
@@ -223,8 +223,8 @@ public abstract class RegexFragment extends android.app.ListFragment implements 
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onRegexSetTitle(String id);
+        void onRegexSetTitle(String id);
 
-        public void onRegexSetTaskerTitle(String title);
+        void onRegexSetTaskerTitle(String title);
     }
 }

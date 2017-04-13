@@ -9,6 +9,7 @@ import android.animation.AnimatorSet;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -23,7 +24,6 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
@@ -76,8 +76,7 @@ public class HomeFragment extends Fragment {
      * number.
      */
     public static HomeFragment newInstance() {
-        HomeFragment fragment = new HomeFragment();
-        return fragment;
+        return new HomeFragment();
     }
 
     @Override
@@ -87,7 +86,7 @@ public class HomeFragment extends Fragment {
         ThemeHelper.onActivityCreateSetTheme(this.getActivity());
         setHasOptionsMenu(true);
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("com.ryansteckler.nlpunbounce" + "_preferences", Context.MODE_WORLD_READABLE);
+        @SuppressLint("WorldReadableFiles") SharedPreferences prefs = getActivity().getSharedPreferences("com.ryansteckler.nlpunbounce" + "_preferences", Context.MODE_WORLD_READABLE);
         String lastVersion = prefs.getString("file_version", "0");
         if (!lastVersion.equals(Wakelocks.FILE_VERSION)) {
             //Reset stats
@@ -96,7 +95,7 @@ public class HomeFragment extends Fragment {
             intent.putExtra(XposedReceiver.STAT_TYPE, UnbounceStatsCollection.STAT_CURRENT);
             try {
                 getActivity().sendBroadcast(intent);
-            } catch (IllegalStateException ise) {
+            } catch (IllegalStateException ignored) {
 
             }
 
@@ -137,7 +136,7 @@ public class HomeFragment extends Fragment {
 
     private void handleSetup(final View view) {
         //All the first run stuff:
-        final SharedPreferences prefs = getActivity().getSharedPreferences("com.ryansteckler.nlpunbounce" + "_preferences", Context.MODE_WORLD_READABLE);
+        @SuppressLint("WorldReadableFiles") final SharedPreferences prefs = getActivity().getSharedPreferences("com.ryansteckler.nlpunbounce" + "_preferences", Context.MODE_WORLD_READABLE);
         boolean firstRun = prefs.getBoolean("first_launch", true);
 
         if (!getAmplifyKernelVersion().equals(Wakelocks.VERSION) || firstRun) {
@@ -175,7 +174,7 @@ public class HomeFragment extends Fragment {
                     while (getActivity() == null) {
                         try {
                             Thread.sleep(250);
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException ignored) {
                         }
                     }
                     ViewGroup container = (ViewGroup) getActivity().findViewById(R.id.bannerSwitcher);
@@ -249,7 +248,7 @@ public class HomeFragment extends Fragment {
                                 intent.putExtra(XposedReceiver.STAT_TYPE, UnbounceStatsCollection.STAT_CURRENT);
                                 try {
                                     getActivity().sendBroadcast(intent);
-                                } catch (IllegalStateException ise) {
+                                } catch (IllegalStateException ignored) {
                                 }
                                 loadStatsFromSource(view);
                             }
@@ -366,7 +365,7 @@ public class HomeFragment extends Fragment {
         //Global wakelocks.
         //Kick off a refresh
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("com.ryansteckler.nlpunbounce" + "_preferences", Context.MODE_WORLD_READABLE);
+        @SuppressLint("WorldReadableFiles") SharedPreferences prefs = getActivity().getSharedPreferences("com.ryansteckler.nlpunbounce" + "_preferences", Context.MODE_WORLD_READABLE);
         {
             //Global wakelocks
             textView = (TextView) view.findViewById(R.id.textGlobalWakelockDurationAllowed);
@@ -499,12 +498,12 @@ public class HomeFragment extends Fragment {
         return animator;
     }
 
-    public boolean isUnbounceServiceRunning() {
+    private boolean isUnbounceServiceRunning() {
         //The Unbounce hook changes this to true.
         return false;
     }
 
-    public String getAmplifyKernelVersion() {
+    private String getAmplifyKernelVersion() {
         //The Unbounce hook changes this to true.
         return "0";
     }
@@ -520,7 +519,7 @@ public class HomeFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onHomeSetTitle(String id);
+        void onHomeSetTitle(String id);
     }
 
     private class WelcomeAnimationListener implements Animator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
@@ -529,7 +528,7 @@ public class HomeFragment extends Fragment {
         private ValueAnimator mReverseWhenDone;
         private ProgressBar mProgressChecking;
 
-        public WelcomeAnimationListener(View parentView, final ValueAnimator reverseWhenDone, ProgressBar progressChecking, ValueAnimator progressAnimation) {
+        WelcomeAnimationListener(View parentView, final ValueAnimator reverseWhenDone, ProgressBar progressChecking, ValueAnimator progressAnimation) {
             mParentView = parentView;
             mReverseWhenDone = reverseWhenDone;
             mProgressChecking = progressChecking;
@@ -674,7 +673,7 @@ public class HomeFragment extends Fragment {
         private void handleRootFailure(TextView problemText, TextView nextButtonText, LinearLayout nextButton) {
             nextButtonText.setText(getResources().getString(R.string.welcome_banner_button_exit));
             String errorFormat = getResources().getString(R.string.welcome_banner_problem_root);
-            String errorText = String.format(errorFormat, R.string.welcome_banner_problem_root_link);
+            @SuppressLint({"StringFormatInvalid", "LocalSuppress"}) String errorText = String.format(errorFormat, R.string.welcome_banner_problem_root_link);
             problemText.setText(Html.fromHtml(errorText));
             problemText.setMovementMethod(LinkMovementMethod.getInstance());
             nextButton.setOnClickListener(new View.OnClickListener() {
@@ -689,7 +688,7 @@ public class HomeFragment extends Fragment {
 
             //Set the problem text.
             String errorFormat = getResources().getString(R.string.welcome_banner_problem_xposed_installed);
-            String errorText = String.format(errorFormat, R.string.welcome_banner_problem_xposed_installed_link);
+            @SuppressLint({"StringFormatInvalid", "LocalSuppress"}) String errorText = String.format(errorFormat, R.string.welcome_banner_problem_xposed_installed_link);
             problemText.setText(Html.fromHtml(errorText));
             problemText.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -790,7 +789,7 @@ public class HomeFragment extends Fragment {
 
         private void handleNoFailure(TextView problemText, LinearLayout nextButton) {
             problemText.setText(getResources().getString(R.string.welcome_banner_problem_none));
-            SharedPreferences prefs = getActivity().getSharedPreferences("com.ryansteckler.nlpunbounce" + "_preferences", Context.MODE_WORLD_READABLE);
+            @SuppressLint("WorldReadableFiles") SharedPreferences prefs = getActivity().getSharedPreferences("com.ryansteckler.nlpunbounce" + "_preferences", Context.MODE_WORLD_READABLE);
             SettingsHelper.resetToDefaults(prefs);
             nextButton.setOnClickListener(new View.OnClickListener() {
                 @Override

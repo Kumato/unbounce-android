@@ -16,7 +16,7 @@ public class AlarmRegexFragment extends RegexFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public AlarmRegexFragment() {
+    private AlarmRegexFragment() {
         super();
     }
 

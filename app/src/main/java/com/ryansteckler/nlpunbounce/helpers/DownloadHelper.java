@@ -50,7 +50,7 @@ public class DownloadHelper {
                     if (status == DownloadManager.STATUS_SUCCESSFUL) {
                         downloading = false;
                         if (listener != null) {
-                            listener.onFinished(status == DownloadManager.STATUS_SUCCESSFUL, cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME)));
+                            listener.onFinished(true, cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME)));
                         }
                     }
 
@@ -71,7 +71,7 @@ public class DownloadHelper {
     }
 
     public interface DownloadListener {
-        public void onFinished(boolean success, String filename);
+        void onFinished(boolean success, String filename);
     }
 
 }

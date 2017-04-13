@@ -2,6 +2,7 @@ package com.ryansteckler.nlpunbounce.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,22 +17,21 @@ import com.ryansteckler.nlpunbounce.models.BaseStats;
 import com.ryansteckler.nlpunbounce.models.EventLookup;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by rsteckler on 10/21/14.
  */
 public abstract class BaseAdapter extends ArrayAdapter {
-    protected final static int ITEM_TYPE = 0;
-    protected final static int CATEGORY_TYPE = 1;
-    protected long mLowCount = 0;
-    protected long mHighCount = 0;
-    protected long mScale = 0;
-    protected ArrayList<BaseStats> mBackingList = null;
-    protected ArrayList<BaseStats> originalList;
+    final static int ITEM_TYPE = 0;
+    final static int CATEGORY_TYPE = 1;
+    long mLowCount = 0;
+    long mScale = 0;
+    ArrayList<BaseStats> mBackingList = null;
     //Track whether we're sorting by count or duration.
-    protected int mSortBy = SortWakeLocks.SORT_COUNT;
+    int mSortBy = SortWakeLocks.SORT_COUNT;
+    private long mHighCount = 0;
+    private ArrayList<BaseStats> originalList;
     private String mPrefix;
     private long mCategoryBlockedIndex = 0;
     private long mCategorySafeIndex = 0;
@@ -40,7 +40,7 @@ public abstract class BaseAdapter extends ArrayAdapter {
 
     //protected Map<String, List<BaseStats>> mapPackageIndexMap = new HashMap<String, List<BaseStats>>();
 
-    public BaseAdapter(Context context, int layoutId, ArrayList<BaseStats> baseStatList, String prefix) {
+    BaseAdapter(Context context, int layoutId, ArrayList<BaseStats> baseStatList, String prefix) {
         super(context, layoutId, baseStatList);
         mPrefix = prefix;
         mBackingList = baseStatList;
@@ -60,7 +60,7 @@ public abstract class BaseAdapter extends ArrayAdapter {
         return position;
     }
 
-    protected void addCategories(ArrayList<BaseStats> alarmStatList) {
+    void addCategories(ArrayList<BaseStats> alarmStatList) {
         mCategoryBlockedIndex = 0;
         mCategorySafeIndex = 1;
         mCategoryUnknownIndex = 2;
@@ -98,9 +98,7 @@ public abstract class BaseAdapter extends ArrayAdapter {
         SharedPreferences prefs = context.getSharedPreferences("com.ryansteckler.nlpunbounce" + "_preferences", Context.MODE_WORLD_READABLE);
 
         //Get the max and min values for the red-green spectrum of counts
-        Iterator<BaseStats> iter = baseStatList.iterator();
-        while (iter.hasNext()) {
-            BaseStats curStat = iter.next();
+        for (BaseStats curStat : baseStatList) {
             if (curStat.getAllowedCount() > mHighCount)
                 mHighCount = curStat.getAllowedCount();
             if (curStat.getAllowedCount() < mLowCount || mLowCount == 0)
@@ -152,7 +150,7 @@ public abstract class BaseAdapter extends ArrayAdapter {
             return ITEM_TYPE;
     }
 
-    protected View getCategoryView(int position, View convertView, ViewGroup parent) {
+    View getCategoryView(int position, View convertView, ViewGroup parent) {
         //Take care of the category special cases.
         CategoryViewHolder categoryViewHolder = null; // view lookup cache stored in tag
 
@@ -183,7 +181,7 @@ public abstract class BaseAdapter extends ArrayAdapter {
         return convertView;
     }
 
-    protected float[] getBackColorFromSpectrum(BaseStats alarm) {
+    float[] getBackColorFromSpectrum(BaseStats alarm) {
         float correctedStat = alarm.getAllowedCount() - mLowCount;
         //Set the background color along the reg-green spectrum based on the severity of the count.
         if (ThemeHelper.getTheme() == ThemeHelper.THEME_DEFAULT) {
@@ -195,7 +193,7 @@ public abstract class BaseAdapter extends ArrayAdapter {
         }
     }
 
-    protected float[] getForeColorFromBack(float[] hsvBack) {
+    float[] getForeColorFromBack(float[] hsvBack) {
         if (ThemeHelper.getTheme() == ThemeHelper.THEME_DEFAULT) {
             return new float[]{0, 0, 0};
         } else {
@@ -210,6 +208,7 @@ public abstract class BaseAdapter extends ArrayAdapter {
 
     protected abstract void sort(int sortBy, boolean categorize);
 
+    @NonNull
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -224,9 +223,8 @@ public abstract class BaseAdapter extends ArrayAdapter {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
-                List<BaseStats> filteredResults = getFilteredResults(constraint);
 
-                results.values = filteredResults;
+                results.values = getFilteredResults(constraint);
 
                 return results;
             }

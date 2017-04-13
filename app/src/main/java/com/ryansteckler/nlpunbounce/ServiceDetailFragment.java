@@ -1,8 +1,6 @@
 package com.ryansteckler.nlpunbounce;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -106,8 +104,7 @@ public class ServiceDetailFragment extends BaseDetailFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_service_detail, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_service_detail, container, false);
     }
 
     @Override

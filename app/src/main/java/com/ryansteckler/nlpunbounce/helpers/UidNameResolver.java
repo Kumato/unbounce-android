@@ -30,8 +30,8 @@ public class UidNameResolver {
 
     private static Context m_context;
     private static UidNameResolver m_instance;
-    protected String[] m_packages;
-    protected String[] m_packageNames;
+    private String[] m_packages;
+    private String[] m_packageNames;
 
     private UidNameResolver(Context ctx) {
         m_context = ctx;
@@ -48,11 +48,10 @@ public class UidNameResolver {
     public Drawable getIcon(String packageName) {
         Drawable icon = null;
         // retrieve and store the icon for that package
-        String myPackage = packageName;
-        if (!myPackage.equals("")) {
+        if (!packageName.equals("")) {
             PackageManager manager = m_context.getPackageManager();
             try {
-                icon = manager.getApplicationIcon(myPackage);
+                icon = manager.getApplicationIcon(packageName);
             } catch (Exception e) {
                 // nop: no icon found
                 icon = null;

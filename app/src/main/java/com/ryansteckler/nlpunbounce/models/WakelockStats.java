@@ -20,7 +20,7 @@ public class WakelockStats extends BaseStats implements Serializable {
         setType("wakelock");
     }
 
-    public WakelockStats(String wakeLockName, int uId) {
+    WakelockStats(String wakeLockName, int uId) {
 
         setType("wakelock");
         setName(wakeLockName);
@@ -80,9 +80,8 @@ public class WakelockStats extends BaseStats implements Serializable {
             return 0;
         long averageTime = mAllowedDuration / getAllowedCount();
         //Now multiply that by the number we've blocked.
-        long blockedTime = averageTime * getBlockCount();
 
-        return blockedTime;
+        return averageTime * getBlockCount();
     }
 
     public String getDurationBlockedFormatted() {

@@ -45,7 +45,7 @@ public class WakelocksFragment extends ListFragment implements BaseDetailFragmen
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public WakelocksFragment() {
+    private WakelocksFragment() {
     }
 
     public static WakelocksFragment newInstance() {
@@ -133,7 +133,7 @@ public class WakelocksFragment extends ListFragment implements BaseDetailFragmen
         //Spin up the new Detail fragment.  Dig the custom animations.  Also put it on the back stack
         //so we can hit the back button and come back to the list.
         FragmentManager fragmentManager = getFragmentManager();
-        WakelockRegexFragment newFrag = (WakelockRegexFragment) new WakelockRegexFragment().newInstance();
+        WakelockRegexFragment newFrag = new WakelockRegexFragment().newInstance();
 //        newFrag.attachClearListener(this);
         fragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.expand_in, R.animator.noop, R.animator.noop, R.animator.expand_out)
@@ -300,9 +300,9 @@ public class WakelocksFragment extends ListFragment implements BaseDetailFragmen
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onWakelocksSetTitle(String id);
+        void onWakelocksSetTitle(String id);
 
-        public void onWakelocksSetTaskerTitle(String id);
+        void onWakelocksSetTaskerTitle(String id);
     }
 
 }

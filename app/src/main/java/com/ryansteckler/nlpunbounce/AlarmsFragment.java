@@ -45,7 +45,7 @@ public class AlarmsFragment extends ListFragment implements AlarmDetailFragment.
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public AlarmsFragment() {
+    private AlarmsFragment() {
     }
 
     public static AlarmsFragment newInstance() {
@@ -130,7 +130,7 @@ public class AlarmsFragment extends ListFragment implements AlarmDetailFragment.
         //Spin up the new Detail fragment.  Dig the custom animations.  Also put it on the back stack
         //so we can hit the back button and come back to the list.
         FragmentManager fragmentManager = getFragmentManager();
-        AlarmRegexFragment newFrag = (AlarmRegexFragment) new AlarmRegexFragment().newInstance();
+        AlarmRegexFragment newFrag = AlarmRegexFragment.newInstance();
 //        newFrag.attachClearListener(this);
         fragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.expand_in, R.animator.noop, R.animator.noop, R.animator.expand_out)
@@ -290,9 +290,9 @@ public class AlarmsFragment extends ListFragment implements AlarmDetailFragment.
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onAlarmsSetTitle(String id);
+        void onAlarmsSetTitle(String id);
 
-        public void onAlarmsSetTaskerTitle(String title);
+        void onAlarmsSetTaskerTitle(String title);
     }
 
 }

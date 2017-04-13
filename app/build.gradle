@@ -1,37 +1,22 @@
 //Change version here + bump version code.  In Hooks/wakelocks.java, and in xml/preferences.xml
 apply plugin: 'com.android.application'
 
-buildscript {
-    repositories {
-        maven { url 'http://repo1.maven.org/maven2' }
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
-    }
-}
-
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId 'com.ryansteckler.nlpunbounce'
         minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 93
-        versionName '3.3.8'
+        targetSdkVersion 25
+        versionCode 94
+        versionName '3.3.6'
     }
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    productFlavors {
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
@@ -42,5 +27,5 @@ repositories {
 
 dependencies {
     provided 'de.robv.android.xposed:api:53'
-    compile 'com.android.support:support-v4:25.0.0'
+    compile 'com.android.support:support-v4:25.3.1'
 }

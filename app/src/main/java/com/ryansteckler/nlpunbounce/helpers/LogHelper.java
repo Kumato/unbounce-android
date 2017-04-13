@@ -7,7 +7,7 @@ import android.util.Log;
 /**
  * Created by rsteckler on 11/1/14.
  */
-public class LogHelper {
+class LogHelper {
     private static String TAG = "Amplify";
 
     public static void debugLog(Context c, String log) {

@@ -90,7 +90,7 @@ public class WakelocksAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void sort(int sortBy, boolean categorize) {
+    protected void sort(int sortBy, boolean categorize) {
         mSortBy = sortBy;
         Collections.sort(mBackingList, SortWakeLocks.getBaseListComparator(mSortBy, categorize, this.getContext()));
         sort(SortWakeLocks.getWakelockListComparator(mSortBy, categorize, this.getContext()));

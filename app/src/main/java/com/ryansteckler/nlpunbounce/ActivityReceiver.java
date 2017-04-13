@@ -10,7 +10,7 @@ public class ActivityReceiver extends BroadcastReceiver {
 
     public static final String STATS_REFRESHED_ACTION = "com.ryansteckler.nlpunbounce.STATS_REFRESHED_ACTION";
     public static final String CREATE_FILES_ACTION = "com.ryansteckler.nlpunbounce.CREATE_FILES_ACTION";
-    public static final String RESET_FILES_ACTION = "com.ryansteckler.nlpunbounce.RESET_FILES_ACTION";
+    private static final String RESET_FILES_ACTION = "com.ryansteckler.nlpunbounce.RESET_FILES_ACTION";
 
     public ActivityReceiver() {
     }

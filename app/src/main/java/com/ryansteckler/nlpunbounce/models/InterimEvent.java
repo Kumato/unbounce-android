@@ -9,7 +9,7 @@ public class InterimEvent implements java.io.Serializable {
     private String mName;
     private int mUId;
 
-    public long getTimeStarted() {
+    long getTimeStarted() {
         return mTimeStarted;
     }
 
@@ -17,7 +17,7 @@ public class InterimEvent implements java.io.Serializable {
         this.mTimeStarted = timeStarted;
     }
 
-    public long getTimeStopped() {
+    long getTimeStopped() {
         return mTimeStopped;
     }
 
@@ -33,7 +33,7 @@ public class InterimEvent implements java.io.Serializable {
         this.mName = name;
     }
 
-    public int getUId() {
+    int getUId() {
         return mUId;
     }
 

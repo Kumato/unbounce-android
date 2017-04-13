@@ -32,7 +32,7 @@ public class NavigationDrawerFragment extends Fragment {
      * Remember the position of the selected item.
      */
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-    public boolean mFromSavedInstanceState = true;
+    private boolean mFromSavedInstanceState = true;
     private boolean mClosing = false;
     /**
      * A pointer to the current callbacks instance (the Activity).
@@ -97,7 +97,7 @@ public class NavigationDrawerFragment extends Fragment {
         return mDrawerListView;
     }
 
-    public boolean isDrawerOpen() {
+    private boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
 
@@ -247,7 +247,7 @@ public class NavigationDrawerFragment extends Fragment {
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */
-    public static interface NavigationDrawerCallbacks {
+    public interface NavigationDrawerCallbacks {
         /**
          * Called when an item in the navigation drawer is selected.
          */

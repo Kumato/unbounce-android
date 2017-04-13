@@ -3,6 +3,7 @@ package com.ryansteckler.nlpunbounce.adapters;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +32,10 @@ public class ServicesAdapter extends BaseAdapter {
         mTruncateEnd = !prefs.getBoolean("scroll_item_names", true);
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         int itemType = this.getItemViewType(position);
         switch (itemType) {
             case ITEM_TYPE:
@@ -58,6 +61,7 @@ public class ServicesAdapter extends BaseAdapter {
                 }
 
                 // Populate the data into the template view using the data object
+                assert service != null;
                 serviceViewHolder.name.setText(service.getName());
                 serviceViewHolder.serviceCount.setText(String.valueOf(service.getAllowedCount()));
 
@@ -95,7 +99,7 @@ public class ServicesAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void sort(int sortBy, boolean categorize) {
+    protected void sort(int sortBy, boolean categorize) {
         mSortBy = sortBy;
         Collections.sort(mBackingList, SortWakeLocks.getBaseListComparator(mSortBy, categorize, this.getContext()));
         sort(SortWakeLocks.getBaseListComparator(mSortBy, categorize, this.getContext()));

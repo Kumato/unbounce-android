@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">"Amplify"</string>
-    <string name="version">"Versiunea"</string>
     <string name="title_activity_material_settings">"Amplify"</string>
     <string name="title_home">"Acasa"</string>
     <string name="title_wakelocks">"Wakelocks"</string>
@@ -11,10 +10,6 @@
     <string name="action_search">"Cauta"</string>
     <string name="action_sort_by_count">"Sorteaza dupa numar"</string>
     <string name="action_sort_by_time">"Sorteaza dupa timp"</string>
-    <string name="action_settings">"Setari"</string>
-    <string name="action_reset_stats">"Reseteaza statistica"</string>
-    <string name="card_donate_title">"KARMA"</string>
-    <string name="card_donate_subtitle">"Suporta dezvoltatorul aplicatiei"</string>
     <string name="card_global_title">"Statistica globala"</string>
     <string name="card_global_subtitle">"Statistica noastra combinata"</string>
     <string name="card_local_title">"Statistica ta"</string>
@@ -42,13 +37,8 @@
     <string name="tasker_task_alarm">"AJUSTEAZA ALARMA"</string>
     <string name="tasker_task_reset">"RESETEAZA STATISTICA"</string>
     <string name="alert_nopro_content">"Pentru a modifica un wakelock sau o alarma care nu sunt oferite din start de catre aplicatie, trebuie sa cumparati un pachet de donatie."</string>
-    <string name="alert_unknown_alarm_title">"Limit alarma necunoscuta?"</string>
-    <string name="alert_unknown_alarm_content">"Aceasta alarma nu a fost dovedita a fii sigura pentru limit. Doresti sa o limit?"</string>
-    <string name="dialog_unbounce">"LIMIT"</string>
     <string name="dialog_cancel">"ANULEAZA"</string>
     <string name="tasker_choose_settings">"Alege setarile care doresti."</string>
-    <string name="alert_unknown_wakelock_title">"Limit wakelock necunoscut?"</string>
-    <string name="alert_unknown_wakelock_content">"Acest wakelock nu a fost dovedit a fii sigur pentru limit. Doresti sa il limit?"</string>
     <string name="alert_delete_stats_title">"Sterge toate statisticile?"</string>
     <string name="alert_delete_stats_content">"Acest lucru v-a sterge toate statisticile pentru alarmele si wakelock-urile tale!"</string>
     <string name="title_settings">"Setari"</string>
@@ -58,8 +48,4 @@
     <string name="reset_settings_confirmation">"Setarile au fost resetate la default."</string>
     <string name="dialog_save">"SALVEAZA"</string>
     <string name="desc_unknown">"Nu avem informatii despre acest eveniment, inca. Acest lucru poate fii nesigur pentru limit. Fa acest lucru doar daca esti sigur si stii cum sa dai disable la Xposed in timpul procesului de boot-are al telefonului! Lucram din greu pentru a aduna cat mai multe informatii despre toate wakelock-urile si alarmele majore. Chill, pana le avem pe toate, bro!"</string>
-    <string name="desc_nlpwakelock">"NlpWakeLock este sigur pentru limit. Este folosit de catre Google Play Service pentru a determina locatia ta folosing o combinatie WiFi+semnalul GSM al telefonului. De indata ce locatia este valabila, o salveaza local pentru ca alte aplicatii sa o poata folosi, exemplu Google Now, care iti poate accesa locatia fara sa utilizeze GPS sau sa trebuiasca sa o afle din nou. Setarile recomandate sunt intre 180 si 600 secunde."</string>
-    <string name="desc_nlpcollectorwakelock">"NlpWakeLock este sigur pentru limit. Este folosit de catre Google Play Service pentru a determina locatia ta folosing o combinatie WiFi+semnalul GSM al telefonului. De indata ce locatia este valabila, o salveaza local pentru ca alte aplicatii sa o poata folosi, exemplu Google Now, care iti poate accesa locatia fara sa utilizeze GPS sau sa trebuiasca sa o afle din nou. Setarile recomandate sunt intre 180 si 600 secunde."</string>
-    <string name="desc_alarmmanager">"Aceasta alarma ofera acces la serviciul de alarma al sistemului. Cand o alarma este inchisa, intent-ul care a fost registrat este transmis de catre sistem, iar aplicatia care a furnizat aceasta alarma este lansata. Alarmele inregistrate sunt stocate cand telefonul este in starea de somnolenta (deep sleep) (si poate sa trezeasca telefonul daca acestea sunt inchise in timpul somnului), dar vor disparea daca telefonul este inchis si redeschis."</string>
-    <string name="desc_audiooffload">"Playback audio cand ecranul telefonului este stins. Daca "</string>
 </resources>

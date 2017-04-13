@@ -22,13 +22,13 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:label="Amplify settings">
-        </activity>
+            android:label="Amplify settings" />
 
         <receiver
             android:name=".ActivityReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:permission="">
             <intent-filter>
                 <action android:name="com.ryansteckler.nlpunbounce.STATS_REFRESHED_ACTION" />
                 <action android:name="com.ryansteckler.nlpunbounce.CREATE_FILES_ACTION" />
@@ -79,19 +79,6 @@
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
             </intent-filter>
         </receiver>
-
-        <receiver
-            android:name=".BootReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name=".SELinuxService"
-            android:exported="false" />
 
     </application>
 

@@ -21,10 +21,10 @@ import com.ryansteckler.nlpunbounce.helpers.ThemeHelper;
 public class SettingsActivity extends Activity {
 
     private static final String TAG = "Amplify: ";
-    static int mClicksOnDebug = 0;
-    static Preference mExtendedDebugCategory = null;
-    int mCurTheme = ThemeHelper.THEME_DEFAULT;
-    int mCurForceEnglish = -1;
+    private static int mClicksOnDebug = 0;
+    private static Preference mExtendedDebugCategory = null;
+    private int mCurTheme = ThemeHelper.THEME_DEFAULT;
+    private int mCurForceEnglish = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class SettingsActivity extends Activity {
             onSharedPreferenceChanged(sharedPref, "show_launcher_icon");
 
             //Hook up the custom clicks
-            Preference pref = (Preference) findPreference("reset_defaults");
+            Preference pref = findPreference("reset_defaults");
             pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -93,7 +93,7 @@ public class SettingsActivity extends Activity {
                 }
             });
 
-            pref = (Preference) findPreference("about_author");
+            pref = findPreference("about_author");
             pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -123,7 +123,7 @@ public class SettingsActivity extends Activity {
         }
 
         private void enableDependent(String control, boolean enable) {
-            Preference controlToAffect = (Preference) findPreference(control);
+            Preference controlToAffect = findPreference(control);
             controlToAffect.setEnabled(enable);
         }
 

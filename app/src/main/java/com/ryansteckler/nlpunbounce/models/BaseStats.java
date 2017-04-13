@@ -21,7 +21,7 @@ public abstract class BaseStats implements Serializable {
 
     private String mDerivedPackageName;
 
-    public String getPackage() {
+    String getPackage() {
         return mPackage;
     }
 
@@ -33,7 +33,7 @@ public abstract class BaseStats implements Serializable {
         return mType;
     }
 
-    protected void setType(String type) {
+    void setType(String type) {
         mType = type;
     }
 
@@ -61,13 +61,13 @@ public abstract class BaseStats implements Serializable {
         return mAllowedCount;
     }
 
-    public void setAllowedCount(long count) {
+    void setAllowedCount(long count) {
         synchronized (this) {
             this.mAllowedCount = count;
         }
     }
 
-    public long incrementAllowedCount() {
+    long incrementAllowedCount() {
         synchronized (this) {
             mAllowedCount++;
         }
@@ -78,34 +78,34 @@ public abstract class BaseStats implements Serializable {
         return mBlockCount;
     }
 
-    public void setBlockCount(long count) {
+    void setBlockCount(long count) {
         synchronized (this) {
             this.mBlockCount = count;
         }
     }
 
-    public long incrementBlockCount() {
+    long incrementBlockCount() {
         synchronized (this) {
             mBlockCount++;
         }
         return mBlockCount;
     }
 
-    public int getUid() {
+    int getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    void setUid(int uid) {
         this.uid = uid;
     }
 
     public abstract String getDerivedPackageName(Context ctx);
 
-    protected String getDerivedPackageName() {
+    String getDerivedPackageName() {
         return mDerivedPackageName;
     }
 
-    protected void setDerivedPackageName(String mDerivedPackageName) {
+    void setDerivedPackageName(String mDerivedPackageName) {
         this.mDerivedPackageName = mDerivedPackageName;
     }
 

@@ -24,7 +24,6 @@ import com.ryansteckler.nlpunbounce.models.UnbounceStatsCollection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -39,7 +38,7 @@ public class RegexDetailFragment extends BaseDetailFragment {
     private String mDefaultSetName = "wakelock";
     private String mEnabled = "enabled";
 
-    public RegexDetailFragment() {
+    private RegexDetailFragment() {
         // Required empty public constructor
     }
 
@@ -108,7 +107,7 @@ public class RegexDetailFragment extends BaseDetailFragment {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        View panel = (View) getView().findViewById(R.id.settingsPanelSeconds);
+        View panel = getView().findViewById(R.id.settingsPanelSeconds);
         TypedValue backgroundValue = new TypedValue();
         Resources.Theme theme = getActivity().getTheme();
         int resId = b ? R.attr.background_panel_enabled : R.attr.background_panel_disabled;
@@ -123,7 +122,7 @@ public class RegexDetailFragment extends BaseDetailFragment {
         TextView textView = (TextView) getView().findViewById(R.id.editRegex);
         textView.setEnabled(!mTaskerMode && b);
         textView.clearFocus();
-        panel = (View) getView().findViewById(R.id.settingsPanelRegex);
+        panel = getView().findViewById(R.id.settingsPanelRegex);
         panel.setBackgroundDrawable(backgroundColor);
         panel.setAlpha(b ? 1 : (float) .4);
 
@@ -155,21 +154,21 @@ public class RegexDetailFragment extends BaseDetailFragment {
         }
     }
 
-    public String getDescriptionText(String regex) {
+    private String getDescriptionText(String regex) {
         ArrayList<BaseStats> events;
         if (mDefaultSetName.equals("wakelock")) {
             try {
                 events = UnbounceStatsCollection.getInstance().toWakelockArrayList(getView().getContext());
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                events = null;
+                events = new ArrayList<>();
             }
         } else if (mDefaultSetName.equals("alarm")) {
             try {
                 events = UnbounceStatsCollection.getInstance().toAlarmArrayList(getView().getContext());
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                events = null;
+                events = new ArrayList<>();
             }
         } else {
             return "Description unavailable";
@@ -228,10 +227,7 @@ public class RegexDetailFragment extends BaseDetailFragment {
         editRegex.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_DONE) {
-                    return handleTextChange(textView, editRegex);
-                }
-                return false;
+                return i == EditorInfo.IME_ACTION_DONE && handleTextChange(textView, editRegex);
             }
         });
         editRegex.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -252,7 +248,7 @@ public class RegexDetailFragment extends BaseDetailFragment {
             e.printStackTrace();
         }
 
-        View panel = (View) getView().findViewById(R.id.settingsPanelSeconds);
+        View panel = getView().findViewById(R.id.settingsPanelSeconds);
         TypedValue backgroundValue = new TypedValue();
         Resources.Theme theme = getActivity().getTheme();
         int resId = enabled ? R.attr.background_panel_enabled : R.attr.background_panel_disabled;
@@ -265,7 +261,7 @@ public class RegexDetailFragment extends BaseDetailFragment {
         panel.setAlpha(enabled ? 1 : (float) .4);
 
         getView().findViewById(R.id.editRegex).setEnabled(!mTaskerMode && onOff.isChecked());
-        panel = (View) getView().findViewById(R.id.settingsPanelRegex);
+        panel = getView().findViewById(R.id.settingsPanelRegex);
         panel.setBackgroundDrawable(backgroundColor);
         panel.setAlpha(enabled ? 1 : (float) .4);
 
@@ -280,6 +276,7 @@ public class RegexDetailFragment extends BaseDetailFragment {
                 mDefaultSeconds = Long.toString(Long.parseLong(textView.getText().toString()));
             } else if (edit.getId() == R.id.editRegex) {
                 try {
+                    //noinspection ResultOfMethodCallIgnored
                     Pattern.compile(textView.getText().toString());
                 } catch (PatternSyntaxException ex) {
                     regexValid = false;
@@ -290,7 +287,7 @@ public class RegexDetailFragment extends BaseDetailFragment {
                     try {
                         TextView description = (TextView) getView().findViewById(R.id.textViewDescription);
                         description.setText(getDescriptionText(mDefaultValue));
-                    } catch (NullPointerException e) {
+                    } catch (NullPointerException ignored) {
                     }
                 } else {
                     textView.setError("Invalid regex");
@@ -312,8 +309,7 @@ public class RegexDetailFragment extends BaseDetailFragment {
                 if (!TextUtils.isEmpty(mDefaultValue)) {
                     if (regexChanged) {
                         // check if this regex already exists
-                        for (Iterator<String> i = set.iterator(); i.hasNext(); ) {
-                            String str = i.next();
+                        for (String str : set) {
                             if (str.startsWith(mDefaultValue + "$$||$$")) {
                                 textView.setError("Duplicate regex");
                                 return true;
@@ -346,8 +342,7 @@ public class RegexDetailFragment extends BaseDetailFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_regex_detail, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_regex_detail, container, false);
     }
 
     @Override

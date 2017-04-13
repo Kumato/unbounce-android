@@ -40,14 +40,14 @@ public class ServicesFragment extends ListFragment implements ServiceDetailFragm
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ServicesFragment() {
+    private ServicesFragment() {
     }
 
     public static ServicesFragment newInstance() {
         return newInstance(false);
     }
 
-    public static ServicesFragment newInstance(boolean taskerMode) {
+    private static ServicesFragment newInstance(boolean taskerMode) {
         ServicesFragment fragment = new ServicesFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_TASKER_MODE, taskerMode);
@@ -274,9 +274,9 @@ public class ServicesFragment extends ListFragment implements ServiceDetailFragm
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onServicesSetTitle(String id);
+        void onServicesSetTitle(String id);
 
-        public void onSetTaskerTitle(String title);
+        void onSetTaskerTitle(String title);
     }
 
 }

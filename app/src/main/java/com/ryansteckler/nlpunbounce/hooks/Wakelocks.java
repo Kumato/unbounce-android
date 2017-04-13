@@ -37,15 +37,12 @@ public class Wakelocks implements IXposedHookLoadPackage {
     public static final String VERSION = "3.3.8"; //This needs to be pulled from the manifest or gradle build.
     public static final String FILE_VERSION = "3"; //This needs to be pulled from the manifest or gradle build.
     private static final String TAG = "Amplify: ";
-    public static HashMap<IBinder, InterimEvent> mCurrentWakeLocks;
+    private static HashMap<IBinder, InterimEvent> mCurrentWakeLocks;
     private final BroadcastReceiver mBroadcastReceiver = new XposedReceiver();
-    XSharedPreferences m_prefs;
+    private XSharedPreferences m_prefs;
     private HashMap<String, Long> mLastWakelockAttempts = null; //The last time each wakelock was allowed.
     private HashMap<String, Long> mLastAlarmAttempts = null; //The last time each alarm was allowed.
     private long mLastUpdateStats = 0;
-    private long mUpdateStatsFrequency = 600000; //Save every ten minutes
-    private long mLastReloadPrefs = 0;
-    private long mReloadPrefsFrequency = 60000; //Reload prefs every minute
     private boolean mRegisteredRecevier = false;
 
     @Override
@@ -82,7 +79,7 @@ public class Wakelocks implements IXposedHookLoadPackage {
                 Intent intent = new Intent(ActivityReceiver.CREATE_FILES_ACTION);
                 try {
                     context.sendBroadcast(intent);
-                } catch (IllegalStateException ise) {
+                } catch (IllegalStateException ignored) {
                 }
             }
         }
@@ -125,8 +122,7 @@ public class Wakelocks implements IXposedHookLoadPackage {
             try19To21AlarmHook(lpparam);
             defaultLog("Successful 19to23 AlarmHook");
             alarmsHooked = true;
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1 &&
-                Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             //Try for alarm hooks for API levels 15-18.
             defaultLog("Attempting 15to18 AlarmHook");
             try15To18AlarmHook(lpparam);
@@ -162,8 +158,7 @@ public class Wakelocks implements IXposedHookLoadPackage {
             try17To18WakeLockHook(lpparam);
             defaultLog("Successful 17to18 WakeLockHook");
             wakeLocksHooked = true;
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1 &&
-                Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
+        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
             //Try for wakelock hooks for API levels 15-16
             defaultLog("Attempting 15to16 WakeLockHook");
             try15To16WakeLockHook(lpparam);
@@ -196,8 +191,7 @@ public class Wakelocks implements IXposedHookLoadPackage {
                 try17To20ServiceHook(lpparam);
                 defaultLog("Successful 17to 22 ServiceHook");
                 servicesHooked = true;
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
-                    Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
+            } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
                 //Try for wakelock hooks for API levels 19-20
                 defaultLog("Attempting 14 to 16 ServiceHook");
                 try14To16ServiceHook(lpparam);
@@ -406,8 +400,6 @@ public class Wakelocks implements IXposedHookLoadPackage {
 
     private void handleWakeLockAcquire(XC_MethodHook.MethodHookParam param, String wakeLockName, IBinder lock, int uId) {
 
-        String trackingWakelockName = wakeLockName;
-
         //If we're blocking this wakelock
         String prefName = "wakelock_" + wakeLockName + "_enabled";
         boolean block = m_prefs.getBoolean(prefName, false);
@@ -446,7 +438,7 @@ public class Wakelocks implements IXposedHookLoadPackage {
             //Debounce this to our minimum interval.
             long lastAttempt = 0;
             try {
-                lastAttempt = mLastWakelockAttempts.get(trackingWakelockName);
+                lastAttempt = mLastWakelockAttempts.get(wakeLockName);
             } catch (NullPointerException npe) { /* ok.  Just havent attempted yet.  Use 0 */ }
 
             long now = SystemClock.elapsedRealtime();
@@ -462,7 +454,7 @@ public class Wakelocks implements IXposedHookLoadPackage {
             } else {
                 //Allow the wakelock
                 defaultLog("Allowing Wakelock " + wakeLockName + ".  Max Interval: " + collectorMaxFreq + " Time since last granted: " + timeSinceLastWakeLock);
-                mLastWakelockAttempts.put(trackingWakelockName, now);
+                mLastWakelockAttempts.put(wakeLockName, now);
                 recordAcquire(wakeLockName, lock, uId);
             }
         } else {
@@ -477,11 +469,11 @@ public class Wakelocks implements IXposedHookLoadPackage {
             try {
                 context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
             } catch (NoSuchFieldError nsfe) {
-                Object am = (Object) XposedHelpers.getObjectField(param.thisObject, "mAm");
+                Object am = XposedHelpers.getObjectField(param.thisObject, "mAm");
                 context = (Context) XposedHelpers.getObjectField(am, "mContext");
             }
         } else {
-            Object am = (Object) XposedHelpers.getObjectField(param.thisObject, "mAm");
+            Object am = XposedHelpers.getObjectField(param.thisObject, "mAm");
             context = (Context) XposedHelpers.getObjectField(am, "mContext");
         }
         if (context != null) {
@@ -523,6 +515,7 @@ public class Wakelocks implements IXposedHookLoadPackage {
 
             long timeSinceLastUpdateStats = now - mLastUpdateStats;
 
+            long mUpdateStatsFrequency = 600000;
             if (timeSinceLastUpdateStats > mUpdateStatsFrequency) {
                 resetFilesIfNeeded(context);
 
@@ -531,7 +524,7 @@ public class Wakelocks implements IXposedHookLoadPackage {
                     Intent intent = new Intent(ActivityReceiver.CREATE_FILES_ACTION);
                     try {
                         context.sendBroadcast(intent);
-                    } catch (IllegalStateException ise) {
+                    } catch (IllegalStateException ignored) {
                     }
                 }
                 mLastUpdateStats = now;
@@ -542,7 +535,9 @@ public class Wakelocks implements IXposedHookLoadPackage {
     private void handleAlarm(XC_MethodHook.MethodHookParam param, ArrayList<Object> triggers) {
         final long now = SystemClock.elapsedRealtime();
         Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
+        long mLastReloadPrefs = 0;
         long sinceReload = now - mLastReloadPrefs;
+        long mReloadPrefsFrequency = 60000;
         if (sinceReload > mReloadPrefsFrequency) {
             setupReceiver(param);
             m_prefs.reload();
@@ -672,11 +667,11 @@ public class Wakelocks implements IXposedHookLoadPackage {
             try {
                 context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
             } catch (NoSuchFieldError nsfe) {
-                Object am = (Object) XposedHelpers.getObjectField(param.thisObject, "mAm");
+                Object am = XposedHelpers.getObjectField(param.thisObject, "mAm");
                 context = (Context) XposedHelpers.getObjectField(am, "mContext");
             }
         } else {
-            Object am = (Object) XposedHelpers.getObjectField(param.thisObject, "mAm");
+            Object am = XposedHelpers.getObjectField(param.thisObject, "mAm");
             context = (Context) XposedHelpers.getObjectField(am, "mContext");
         }
 

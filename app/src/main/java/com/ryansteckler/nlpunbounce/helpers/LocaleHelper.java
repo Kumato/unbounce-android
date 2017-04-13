@@ -1,10 +1,12 @@
 package com.ryansteckler.nlpunbounce.helpers;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 
 import java.util.Locale;
 
@@ -12,7 +14,7 @@ import java.util.Locale;
  * Created by rsteckler on 10/13/14.
  */
 public class LocaleHelper {
-    public static int sForceEnglish = -1;
+    private static int sForceEnglish = -1;
     private static String sLocale = null;
 
     /**
@@ -51,7 +53,7 @@ public class LocaleHelper {
             config.locale = locale;
             activity.getBaseContext().getResources().updateConfiguration(config, activity.getBaseContext().getResources().getDisplayMetrics());
         } else {
-            Locale defaultLocale = activity.getResources().getSystem().getConfiguration().locale;
+            Locale defaultLocale = Resources.getSystem().getConfiguration().locale;
             Locale.setDefault(defaultLocale);
             Configuration config = new Configuration();
             config.locale = defaultLocale;
@@ -76,6 +78,7 @@ public class LocaleHelper {
         return sForceEnglish;
     }
 
+    @SuppressLint("DefaultLocale")
     public static String getFormattedTime(java.lang.Object... paramTimes) {
         StringBuilder sbuf = new StringBuilder();
         int offset = 0;
@@ -87,12 +90,12 @@ public class LocaleHelper {
         for (int i = 0; i < paramTimes.length; i++) {
             if (i < (paramTimes.length - offset)) {
                 if ((long) paramTimes[i] > 0) {
+                    //noinspection MalformedFormatString
                     sbuf.append(String.format("%02d", paramTimes[i]));
                     sbuf.append(":");
-                } else {
-                    continue;
                 }
             } else {
+                //noinspection MalformedFormatString
                 sbuf.append(String.format("%02d", paramTimes[i]));
                 sbuf.append(":");
             }

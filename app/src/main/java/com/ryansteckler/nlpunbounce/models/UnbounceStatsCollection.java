@@ -39,8 +39,8 @@ import static com.ryansteckler.nlpunbounce.helpers.LocaleHelper.getFormattedTime
 public class UnbounceStatsCollection implements Serializable {
 
     public static final int STAT_CURRENT = 0;
-    public static final int STAT_GLOBAL = 1;
-    public static final int STAT_PUSH = 2;
+    private static final int STAT_GLOBAL = 1;
+    private static final int STAT_PUSH = 2;
     //    final private static String URL_STATS = "http://localhost:8080/stats";
     final private static String URL_STATS = "http://unbounce-server-1.appspot.com/stats";
     final private static String STATS_DIRECTORY = "/data/data/com.ryansteckler.nlpunbounce/files/";
@@ -48,11 +48,11 @@ public class UnbounceStatsCollection implements Serializable {
     final private static String STATS_FILENAME_GLOBAL = "nlpunbounce.global.stats";
     final private static String STATS_FILENAME_PUSH = "nlpunbounce.push.stats";
     private static UnbounceStatsCollection mInstance = null;
-    HashMap<String, BaseStats> mCurrentStats = null;
-    HashMap<String, Long> mGlobalStats = null;
-    HashMap<String, BaseStats> mSincePushStats = null;
-    long mLastPush = 0;
-    long mPushTimeFrequency = 86400000; //Push every 24 hours
+    private HashMap<String, BaseStats> mCurrentStats = null;
+    private HashMap<String, Long> mGlobalStats = null;
+    private HashMap<String, BaseStats> mSincePushStats = null;
+    private long mLastPush = 0;
+    private long mPushTimeFrequency = 86400000; //Push every 24 hours
     private long mRunningSince = 0;
     private boolean mGlobalParticipation = true;
 
@@ -419,7 +419,7 @@ public class UnbounceStatsCollection implements Serializable {
         }
         if (combined instanceof WakelockStats) {
             ((WakelockStats) combined).addDurationAllowed(toAdd.getTimeStopped() - toAdd.getTimeStarted());
-            ((WakelockStats) combined).setUid(toAdd.getUId());
+            combined.setUid(toAdd.getUId());
             combined.incrementAllowedCount();
             statChoice.put(toAdd.getName(), combined);
         }

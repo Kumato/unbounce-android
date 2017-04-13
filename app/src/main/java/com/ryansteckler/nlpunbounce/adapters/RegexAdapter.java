@@ -3,6 +3,7 @@ package com.ryansteckler.nlpunbounce.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,9 @@ public class RegexAdapter extends ArrayAdapter<String> {
         this.mTaskerMode = taskerMode;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         View view = null;
         if (convertView == null) {
             LayoutInflater inflator = context.getLayoutInflater();
@@ -55,7 +57,7 @@ public class RegexAdapter extends ArrayAdapter<String> {
                 public void onClick(View v) {
 
                     Integer tag = (Integer) v.getTag();
-                    int pos = tag.intValue();
+                    int pos = tag;
 
                     list.remove(pos);
 

@@ -22,7 +22,6 @@ public class RootHelper {
     public static void handleSELinux() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
-
                 Process process = Runtime.getRuntime().exec(new String[]{"su"});
                 DataOutputStream os = new DataOutputStream(process.getOutputStream());
                 os.writeBytes("/system/bin/chcon u:object_r:system_data_file:s0 /data/data/com.ryansteckler.nlpunbounce \n");
@@ -64,7 +63,7 @@ class ExecShell {
 
     private static String LOG_TAG = ExecShell.class.getName();
 
-    public ArrayList<String> executeCommand(SHELL_CMD shellCmd) {
+    ArrayList<String> executeCommand(SHELL_CMD shellCmd) {
         String line = null;
         ArrayList<String> fullResponse = new ArrayList<String>();
         Process localProcess = null;
@@ -85,7 +84,7 @@ class ExecShell {
         return fullResponse;
     }
 
-    public enum SHELL_CMD {
+    enum SHELL_CMD {
         check_su_binary(new String[]{"/system/xbin/which", "su"});
         String[] command;
 
