@@ -16,7 +16,7 @@ public class RootHelper {
     }
 
     public static boolean isDeviceRooted() {
-        return new ExecShell().executeCommand(ExecShell.SHELL_CMD.check_su_binary) != null;
+        return true;
     }
 
     public static void handleSELinux() {
